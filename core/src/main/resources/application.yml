@@ -1,0 +1,50 @@
+server:
+  port: 8090
+  servlet:
+    session:
+      timeout: 1800 # session过期时长，单位：秒，此处应与JwtUtil过期时间保持一致，todo 暂时未找到方法获取此值
+spring:
+  datasource:
+    druid:
+      name: devplat
+      # url: jdbc:mysql://192.168.189.39:3306/gaia?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+      url: jdbc:mysql://localhost:3336/gaia?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+      username: root
+      password: sxkj0818web
+      driver-class-name: com.mysql.jdbc.Driver
+      filters: stat
+      max-active: 20
+      initial-size: 1
+      max-wait: 60000
+      min-idle: 1
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: select 'x'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-open-prepared-statements: 20
+
+mybatis:
+  mapper-locations: classpath*:mapping/*Mapper.xml
+  type-aliases-package: com.sxkj.gaia.model
+  configuration:
+    lazy-loading-enabled: true
+    aggressive-lazy-loading: false
+
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+
+# todo swagger 控制开关，生产环境下须修改为false
+swagger:
+  enable: true
+
+
+
+
+
+

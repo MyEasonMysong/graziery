@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxkj.gaia.mapper.RoleMapper">
+  <resultMap id="BaseResultMap" type="com.sxkj.gaia.model.Role">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="range" jdbcType="TINYINT" property="range" />
+    <result column="create_id" jdbcType="BIGINT" property="createId" />
+    <result column="update_id" jdbcType="BIGINT" property="updateId" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="status_flag" jdbcType="TINYINT" property="statusFlag" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_role
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sxkj.gaia.model.Role">
+    insert into sys_role (id, name, range, 
+      create_id, update_id, sort, 
+      status_flag, remark)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{range,jdbcType=TINYINT}, 
+      #{createId,jdbcType=BIGINT}, #{updateId,jdbcType=BIGINT}, #{sort,jdbcType=INTEGER}, 
+      #{statusFlag,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.sxkj.gaia.model.Role">
+    update sys_role
+    set name = #{name,jdbcType=VARCHAR},
+      range = #{range,jdbcType=TINYINT},
+      create_id = #{createId,jdbcType=BIGINT},
+      update_id = #{updateId,jdbcType=BIGINT},
+      sort = #{sort,jdbcType=INTEGER},
+      status_flag = #{statusFlag,jdbcType=TINYINT},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, name, range, create_id, update_id, sort, status_flag, remark
+    from sys_role
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, name, range, create_id, update_id, sort, status_flag, remark
+    from sys_role
+  </select>
+</mapper>

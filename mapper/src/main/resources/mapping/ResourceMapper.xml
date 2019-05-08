@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxkj.gaia.mapper.ResourceMapper">
+  <resultMap id="BaseResultMap" type="com.sxkj.gaia.model.Resource">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="path" jdbcType="VARCHAR" property="path" />
+    <result column="create_id" jdbcType="BIGINT" property="createId" />
+    <result column="update_id" jdbcType="BIGINT" property="updateId" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="status_flag" jdbcType="TINYINT" property="statusFlag" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_resource
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sxkj.gaia.model.Resource" keyProperty="id" useGeneratedKeys="true">
+    insert into sys_resource (id, name, parent_id, 
+      type, path, create_id, 
+      update_id, sort, status_flag, 
+      remark)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{parentId,jdbcType=BIGINT}, 
+      #{type,jdbcType=TINYINT}, #{path,jdbcType=VARCHAR}, #{createId,jdbcType=BIGINT}, 
+      #{updateId,jdbcType=BIGINT}, #{sort,jdbcType=INTEGER}, #{statusFlag,jdbcType=TINYINT}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.sxkj.gaia.model.Resource">
+    update sys_resource
+    set name = #{name,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=BIGINT},
+      type = #{type,jdbcType=TINYINT},
+      path = #{path,jdbcType=VARCHAR},
+      create_id = #{createId,jdbcType=BIGINT},
+      update_id = #{updateId,jdbcType=BIGINT},
+      sort = #{sort,jdbcType=INTEGER},
+      status_flag = #{statusFlag,jdbcType=TINYINT},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, name, parent_id, type, path, create_id, update_id, sort, status_flag, 
+    remark
+    from sys_resource
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, name, parent_id, type, path, create_id, update_id, sort, status_flag, 
+    remark
+    from sys_resource
+  </select>
+</mapper>

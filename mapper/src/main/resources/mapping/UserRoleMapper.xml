@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxkj.gaia.mapper.UserRoleMapper">
+  <resultMap id="BaseResultMap" type="com.sxkj.gaia.model.UserRole">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="role_id" jdbcType="BIGINT" property="roleId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="create_id" jdbcType="BIGINT" property="createId" />
+    <result column="update_id" jdbcType="BIGINT" property="updateId" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="status_flag" jdbcType="TINYINT" property="statusFlag" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_user_role
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sxkj.gaia.model.UserRole" keyProperty="id" useGeneratedKeys="true">
+    insert into sys_user_role (id, role_id, user_id, 
+      create_id, update_id, sort, 
+      status_flag, remark)
+    values (#{id,jdbcType=BIGINT}, #{roleId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
+      #{createId,jdbcType=BIGINT}, #{updateId,jdbcType=BIGINT}, #{sort,jdbcType=INTEGER}, 
+      #{statusFlag,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.sxkj.gaia.model.UserRole">
+    update sys_user_role
+    set role_id = #{roleId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      create_id = #{createId,jdbcType=BIGINT},
+      update_id = #{updateId,jdbcType=BIGINT},
+      sort = #{sort,jdbcType=INTEGER},
+      status_flag = #{statusFlag,jdbcType=TINYINT},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, role_id, user_id, create_id, update_id, sort, status_flag, remark
+    from sys_user_role
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, role_id, user_id, create_id, update_id, sort, status_flag, remark
+    from sys_user_role
+  </select>
+  <insert id="batchInsert" parameterType="java.util.List">
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    INSERT INTO sys_user_role(role_id,user_id,create_id,update_id,status_flag) VALUES
+    <foreach collection="list" item="userRole" index="index" separator=",">
+      (
+      #{userRole.roleId},#{userRole.userId},#{userRole.createId},#{userRole.updateId},1
+      )
+    </foreach>
+  </insert>
+  <delete id="deleteByUserId" parameterType="java.lang.Long">
+    delete from sys_user_role
+    where user_id = #{userId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByRoleId" parameterType="java.lang.Long">
+    delete from sys_user_role
+    where role_id = #{roleId,jdbcType=BIGINT}
+  </delete>
+</mapper>
