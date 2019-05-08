@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.bus.dao.BusTaskDao">
+    
+	<sql id="busTaskColumns">
+		a.id AS "id",
+		a.task_name AS "taskName",
+		a.task_year AS "taskYear",
+		a.task_level AS "taskLevel",
+		a.begin_date AS "beginDate",
+		a.end_date AS "endDate",
+		a.charge_office_id AS "chargeOfficeId",
+		a.partake_office_id AS "partakeOfficeId",
+		a.check_num AS "checkNum",
+		a.check_system_id AS "checkSystemId",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		o7.name AS "charge.name",
+		o8.name AS "partake.name",
+		cs.name AS "checkSystem.name",
+		cs.id AS "checkSystem.id"
+	</sql>
+	
+	<sql id="busTaskJoins">
+		LEFT JOIN sys_office o7 ON o7.id = a.charge_office_id
+		LEFT JOIN sys_office o8 ON o8.id = a.partake_office_id
+		LEFT JOIN bas_check_system cs ON cs.id = a.check_system_id
+	</sql>
+    
+	<select id="get" resultType="BusTask">
+		SELECT 
+			<include refid="busTaskColumns"/>
+		FROM bus_task a
+		<include refid="busTaskJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="BusTask">
+		SELECT 
+			<include refid="busTaskColumns"/>
+		FROM bus_task a
+		<include refid="busTaskJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="taskName != null and taskName != ''">
+				AND a.task_name LIKE concat(#{taskName},'%')
+			</if>
+			<if test="taskYear != null and taskYear != ''">
+				AND a.task_year = #{taskYear}
+			</if>
+			<if test="taskLevel != null and taskLevel != ''">
+				AND a.task_level = #{taskLevel}
+			</if>
+			<if test="beginDate != null and beginDate !=''">
+				and a.begin_date =  #{beginDate}
+			</if>
+			<if test="endDate != null and endDate !=''">
+				and a.end_date =  #endDate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="BusTask">
+		SELECT 
+			<include refid="busTaskColumns"/>
+		FROM bus_task a
+		<include refid="busTaskJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO bus_task(
+			id,
+			task_name,
+			task_year,
+			task_level,
+			begin_date,
+			end_date,
+			charge_office_id,
+			partake_office_id,
+			check_num,
+			check_system_id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{taskName},
+			#{taskYear},
+			#{taskLevel},
+			#{beginDate},
+			#{endDate},
+			#{chargeOfficeId},
+			#{partakeOfficeId},
+			#{checkNum},
+			#{checkSystemId},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE bus_task SET 	
+			task_name = #{taskName},
+			task_year = #{taskYear},
+			task_level = #{taskLevel},
+			begin_date = #{beginDate},
+			end_date = #{endDate},
+			charge_office_id = #{chargeOfficeId},
+			partake_office_id = #{partakeOfficeId},
+			check_num = #{checkNum},
+			check_system_id = #{checkSystemId},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE bus_task SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

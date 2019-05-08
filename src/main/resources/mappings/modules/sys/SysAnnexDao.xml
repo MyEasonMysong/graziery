@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.sys.dao.SysAnnexDao">
+    
+	<sql id="sysAnnexColumns">
+		a.id AS "id",
+		a.table_id AS "tableId",
+		a.table_name AS "tableName",
+		a.file_path AS "filePath",
+		a.file_type AS "fileType",
+		a.file_size AS "fileSize",
+		a.file_name AS "fileName",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="sysAnnexJoins">
+	</sql>
+    
+	<select id="get" resultType="SysAnnex">
+		SELECT 
+			<include refid="sysAnnexColumns"/>
+		FROM sys_annex a
+		<include refid="sysAnnexJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="SysAnnex">
+		SELECT 
+			<include refid="sysAnnexColumns"/>
+		FROM sys_annex a
+		<include refid="sysAnnexJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			AND a.table_id = #{tableId}
+			AND a.table_name = #{tableName}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="SysAnnex">
+		SELECT 
+			<include refid="sysAnnexColumns"/>
+		FROM sys_annex a
+		<include refid="sysAnnexJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sys_annex(
+			id,
+			table_id,
+			table_name,
+			file_path,
+			file_type,
+			file_size,
+			file_name,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{tableId},
+			#{tableName},
+			#{filePath},
+			#{fileType},
+			#{fileSize},
+			#{fileName},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sys_annex SET 	
+			table_id = #{tableId},
+			table_name = #{tableName},
+			file_path = #{filePath},
+			file_type = #{fileType},
+			file_size = #{fileSize},
+			file_name = #{fileName},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE sys_annex SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="deleteBytableId">
+		UPDATE sys_annex SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE table_id = #{tableId} and table_name=#{tableName}
+	</update>
+	
+</mapper>

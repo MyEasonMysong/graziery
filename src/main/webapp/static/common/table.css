@@ -1,0 +1,96 @@
+.table th, .table td {
+	text-align: center;
+	vertical-align: middle !important;
+}
+
+.td_left {
+	text-align: left !important;
+	padding-left: 10px !important;
+}
+
+.td_right {
+	text-align: right !important;
+	padding-left: 10px !important;
+}
+
+/*基本表格样式*/
+.tableStyle {
+	border-collapse: collapse;
+	border: 1px solid #cccccc;
+	width: 100%;
+	background-color: White;
+	margin-top: 10px;
+}
+
+.noBottomLine {
+	border-bottom: 0 !important;
+}
+
+.tableStyle th {
+	border-left: 1.0pt solid windowtext;
+	border-right: 1.0pt solid windowtext;
+	word-wrap: normal;
+	word-break: keep-all;
+	overflow: hidden;
+	border-color: #cccccc;
+	height: 36px;
+	padding: 0 2px 0 4px;
+	color: #000000;
+	background: #f2f2f2;
+	font-weight: bolder;
+	line-height: 28px;
+}
+
+.tableStyle td {
+	border-left: 1.0pt solid windowtext;
+	border-right: 1.0pt solid windowtext;
+	border-bottom: 1.0pt solid windowtext;
+	border-top: 1.0pt solid windowtext;
+	border-color: #cccccc;
+	height: 36px;
+	padding: 1px 2px 1px 4px;
+}
+
+.tableStyle tr {
+	color: #333333;
+}
+
+.tableStyle .viewModeEven {
+	text-align: right;
+	background-color: #eeeeee;
+}
+
+.tableStyleWordWrap td {
+	word-wrap: normal;
+	word-break: keep-all;
+}
+/*基本表格样式*/
+fieldset {
+	margin: 0px 0 0px 0;
+	padding: 10px;
+	border: #DDD 1px solid;
+	display: block;
+	-webkit-margin-start: 2px;
+	-webkit-margin-end: 2px;
+	-webkit-padding-before: 0.35em;
+	-webkit-padding-start: 0.75em;
+	-webkit-padding-end: 0.75em;
+	-webkit-padding-after: 0.625em;
+	min-width: -webkit-min-content;
+}
+
+legend {
+	font-weight: bold;
+	color: #666;
+	display: block;
+	-webkit-padding-start: 2px;
+	-webkit-padding-end: 2px;
+	border-width: initial;
+	border-style: none;
+	border-color: initial;
+	border-image: initial;
+	width: auto;
+	margin: 0px 0px 0px;
+	font-size: 16px;
+	line-height: 24px;
+}

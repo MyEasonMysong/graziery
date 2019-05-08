@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.bas.dao.CheckSystemSubDao">
+    
+	<sql id="checkSystemSubColumns">
+		a.id AS "id",
+		a.check_system_id AS "checkSystemId",
+		a.item_id AS "itemId",
+		a.item_parent_id AS "itemParentId",
+		a.check_method AS "checkMethod",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="checkSystemSubJoins">
+	</sql>
+    
+	<select id="get" resultType="CheckSystemSub">
+		SELECT 
+			<include refid="checkSystemSubColumns"/>
+		FROM bas_check_system_sub a
+		<include refid="checkSystemSubJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="CheckSystemSub">
+		SELECT 
+			<include refid="checkSystemSubColumns"/>
+		FROM bas_check_system_sub a
+		<include refid="checkSystemSubJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CheckSystemSub">
+		SELECT 
+			<include refid="checkSystemSubColumns"/>
+		FROM bas_check_system_sub a
+		<include refid="checkSystemSubJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO bas_check_system_sub(
+			id,
+			check_system_id,
+			item_id,
+			item_parent_id,
+			check_method,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{checkSystemId},
+			#{itemId},
+			#{itemParentId},
+			#{checkMethod},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+
+	<insert id="saveList">
+
+		INSERT INTO bas_check_system_sub(
+			id,
+			check_system_id,
+			item_id,
+			item_parent_id,
+			check_method,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+			) VALUES
+			<foreach collection="list" item="n" index="index" separator="," >
+			 (
+			#{n.id},
+			#{n.checkSystemId},
+			#{n.itemId},
+			#{n.itemParentId},
+			#{n.checkMethod},
+			#{n.createBy.id},
+			#{n.createDate},
+			#{n.updateBy.id},
+			#{n.updateDate},
+			#{n.remarks},
+			#{n.delFlag}
+			)
+			</foreach>
+	</insert>
+	<update id="update">
+		UPDATE bas_check_system_sub SET 	
+			check_system_id = #{checkSystemId},
+			item_id = #{itemId},
+			item_parent_id = #{itemParentId},
+			check_method = #{checkMethod},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE bas_check_system_sub SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+</mapper>

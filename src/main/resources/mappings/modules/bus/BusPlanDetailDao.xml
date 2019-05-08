@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.bus.dao.BusPlanDetailDao">
+    
+	<sql id="busPlanDetailColumns">
+		a.id AS "id",
+		a.plan_id AS "planId",
+		a.plan_year AS "planYear",
+		a.plan_month AS "planMonth",
+		a.ent_id AS "entId",
+		a.items AS "items",
+		a.check_type_code AS "checkTypeCode",
+		a.duty_type_code AS "dutyTypeCode",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="busPlanDetailJoins">
+	</sql>
+    
+	<select id="get" resultType="BusPlanDetail">
+		SELECT 
+			<include refid="busPlanDetailColumns"/>
+		FROM bus_plan_detail a
+		<include refid="busPlanDetailJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="BusPlanDetail">
+		SELECT 
+			<include refid="busPlanDetailColumns"/>
+		FROM bus_plan_detail a
+		<include refid="busPlanDetailJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="BusPlanDetail">
+		SELECT 
+			<include refid="busPlanDetailColumns"/>
+		FROM bus_plan_detail a
+		<include refid="busPlanDetailJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO bus_plan_detail(
+			id,
+			plan_id,
+			plan_year,
+			plan_month,
+			ent_id,
+			items,
+			check_type_code,
+			duty_type_code,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{planId},
+			#{planYear},
+			#{planMonth},
+			#{entId},
+			#{items},
+			#{checkTypeCode},
+			#{dutyTypeCode},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE bus_plan_detail SET 	
+			plan_id = #{planId},
+			plan_year = #{planYear},
+			plan_month = #{planMonth},
+			ent_id = #{entId},
+			items = #{items},
+			check_type_code = #{checkTypeCode},
+			duty_type_code = #{dutyTypeCode},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE bus_plan_detail SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+	<insert id="batchInsert">
+
+		INSERT INTO bus_plan_detail(
+		id,
+		plan_id,
+		plan_year,
+		plan_month,
+		ent_id,
+		items,
+		check_type_code,
+		duty_type_code,
+		create_by,
+		create_date,
+		update_by,
+		update_date,
+		remarks,
+		del_flag
+		) VALUES
+		<foreach collection="list" item="n" index="index" separator="," >
+			(
+			#{n.id},
+			#{n.planId},
+			#{n.planYear},
+			#{n.planMonth},
+			#{n.entId},
+			#{n.items},
+			#{n.checkTypeCode},
+			#{n.dutyTypeCode},
+			#{n.createBy.id},
+			#{n.createDate},
+			#{n.updateBy.id},
+			#{n.updateDate},
+			#{n.remarks},
+			#{n.delFlag}
+			)
+		</foreach>
+	</insert>
+</mapper>
