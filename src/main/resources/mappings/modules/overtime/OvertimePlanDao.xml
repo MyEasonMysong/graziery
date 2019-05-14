@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.overtime.dao.OvertimePlanDao">
+    
+	<sql id="overtimePlanColumns">
+		a.id AS "id",
+		a.office_id AS "officeId",
+		a.apply_user_id AS "applyUserId",
+		a.apply_user_name AS "applyUserName",
+		a.start_time AS "startTime",
+		a.end_time AS "endTime",
+		a.duration AS "duration",
+		a.over_time_type AS "overTimeType",
+		a.project_name AS "projectName",
+		a.project_code AS "projectCode",
+		a.acceptor AS "acceptor",
+		a.job_content AS "jobContent",
+		a.approval_status AS "approvalStatus",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="overtimePlanJoins">
+		JOIN sys_user u ON u.id=a.apply_user_id
+		JOIN sys_office o ON o.id=a.office_id
+	</sql>
+    
+	<select id="get" resultType="OvertimePlan">
+		SELECT 
+			<include refid="overtimePlanColumns"/>
+		FROM overtime_plan a
+		<include refid="overtimePlanJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="OvertimePlan">
+		SELECT 
+			<include refid="overtimePlanColumns"/>
+		FROM overtime_plan a
+		<include refid="overtimePlanJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="OvertimePlan">
+		SELECT 
+			<include refid="overtimePlanColumns"/>
+		FROM overtime_plan a
+		<include refid="overtimePlanJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO overtime_plan(
+			id,
+			office_id,
+			apply_user_id,
+			apply_user_name,
+			start_time,
+			end_time,
+			duration,
+			over_time_type,
+			project_name,
+			project_code,
+			acceptor,
+			job_content,
+			approval_status,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{officeId},
+			#{applyUserId},
+			#{applyUserName},
+			#{startTime},
+			#{endTime},
+			#{duration},
+			#{overTimeType},
+			#{projectName},
+			#{projectCode},
+			#{acceptor},
+			#{jobContent},
+			#{approvalStatus},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE overtime_plan SET
+			office_id=#{officeId},
+			apply_user_id = #{applyUserId},
+			apply_user_name = #{applyUserName},
+			start_time = #{startTime},
+			end_time = #{endTime},
+			duration = #{duration},
+			over_time_type = #{overTimeType},
+			project_name = #{projectName},
+			project_code = #{projectCode},
+			acceptor = #{acceptor},
+			job_content = #{jobContent},
+			approval_status = #{approvalStatus},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE overtime_plan SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
