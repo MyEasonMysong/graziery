@@ -3,12 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.sys.service;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.identity.Group;
@@ -37,6 +32,8 @@ import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.utils.LogUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+
+import javax.management.relation.RoleList;
 
 /**
  * 系统管理，安全相关实体的管理类,包括用户、角色、菜单.
@@ -128,6 +125,9 @@ public class SystemService extends BaseService implements InitializingBean {
 	
 	@Transactional(readOnly = false)
 	public void saveUser(User user) {
+		List<Role> roleList = new ArrayList<>();
+		roleList.add(user.getRole());
+		user.setRoleList(roleList);
 		if (StringUtils.isBlank(user.getId())){
 			user.preInsert();
 			userDao.insert(user);

@@ -30,7 +30,9 @@
 				}
 			});
 		});
+
 	</script>
+
 </head>
 <body>
 	<ul class="nav nav-tabs">
@@ -120,25 +122,20 @@
 		<div class="control-group">
 			<label class="control-label">是否允许登录:</label>
 			<div class="controls">
-				<form:select path="loginFlag">
+				<%--<form:select path="loginFlag">
 					<form:options items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
+				</form:select>--%>
+				<form:radiobuttons path="loginFlag" items="${fns:getDictList('yes_no')}" class="form-control required" />
 				<span class="help-inline"><font color="red">*</font> “是”代表此账号允许登录，“否”则表示此账号不允许登录</span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">用户类型:</label>
-			<div class="controls">
-				<form:select path="userType" class="input-xlarge">
-					<form:option value="" label="请选择"/>
-					<form:options items="${fns:getDictList('sys_user_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">用户角色:</label>
 			<div class="controls">
-				<form:checkboxes path="roleIdList" items="${allRoles}" itemLabel="name" itemValue="id" htmlEscape="false" class="required"/>
+				<form:select path="role" class="input-xlarge">
+					<form:option value="" label="请选择"/>
+					<form:options items="${allRoles}" itemLabel="name" itemValue="id" htmlEscape="false" class="required"/>
+				</form:select>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
