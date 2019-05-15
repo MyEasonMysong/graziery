@@ -1,7 +1,7 @@
 /**
  * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
  */
-package com.thinkgem.jeesite.modules.overtime.web;
+package com.thinkgem.jeesite.modules.bas.web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,16 +19,16 @@ import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
-import com.thinkgem.jeesite.modules.overtime.entity.OvertimePlan;
-import com.thinkgem.jeesite.modules.overtime.service.OvertimePlanService;
+import com.thinkgem.jeesite.modules.bas.entity.OvertimePlan;
+import com.thinkgem.jeesite.modules.bas.service.OvertimePlanService;
 
 /**
- * 加班计划申请Controller
- * @author Xuyanyan
- * @version 2019-05-14
+ * 加班申请Controller
+ * @author lichao
+ * @version 2019-05-15
  */
 @Controller
-@RequestMapping(value = "${adminPath}/overtime/overtimePlan")
+@RequestMapping(value = "${adminPath}/bas/overtimePlan")
 public class OvertimePlanController extends BaseController {
 
 	@Autowired
@@ -39,6 +39,7 @@ public class OvertimePlanController extends BaseController {
 		OvertimePlan entity = null;
 		if (StringUtils.isNotBlank(id)){
 			entity = overtimePlanService.get(id);
+
 		}
 		if (entity == null){
 			entity = new OvertimePlan();
@@ -46,78 +47,38 @@ public class OvertimePlanController extends BaseController {
 		return entity;
 	}
 	
-	@RequiresPermissions("overtime:overtimePlan:view")
+	@RequiresPermissions("bas:overtimePlan:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(OvertimePlan overtimePlan, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<OvertimePlan> page = overtimePlanService.findPage(new Page<OvertimePlan>(request, response), overtimePlan); 
 		model.addAttribute("page", page);
-		return "modules/overtime/overtimePlanList";
+		return "modules/bas/overtimePlanList";
 	}
 
-	@RequiresPermissions("overtime:overtimePlan:view")
+	@RequiresPermissions("bas:overtimePlan:view")
 	@RequestMapping(value = "form")
 	public String form(OvertimePlan overtimePlan, Model model) {
-
-		String view = "overtimePlanForm";
-
-		// 查看审批申请单
-		if (org.apache.commons.lang3.StringUtils.isNotBlank(overtimePlan.getId())){//.getAct().getProcInsId())){
-
-			// 环节编号
-			String taskDefKey = overtimePlan.getAct().getTaskDefKey();
-
-			// 查看工单
-			if(overtimePlan.getAct().isFinishTask()){
-				view = "testAuditView";
-			}
-			// 修改环节
-			else if ("modify".equals(taskDefKey)){
-				view = "testAuditForm";
-			}
-			// 审核环节
-			else if ("audit".equals(taskDefKey)){
-				view = "testAuditAudit";
-//				String formKey = "/oa/testAudit";
-//				return "redirect:" + ActUtils.getFormUrl(formKey, testAudit.getAct());
-			}
-			// 审核环节2
-			else if ("audit2".equals(taskDefKey)){
-				view = "testAuditAudit";
-			}
-			// 审核环节3
-			else if ("audit3".equals(taskDefKey)){
-				view = "testAuditAudit";
-			}
-			// 审核环节4
-			else if ("audit4".equals(taskDefKey)){
-				view = "testAuditAudit";
-			}
-			// 兑现环节
-			else if ("apply_end".equals(taskDefKey)){
-				view = "testAuditAudit";
-			}
-		}
 		model.addAttribute("overtimePlan", overtimePlan);
-		return "modules/overtime/"+view;
+		return "modules/bas/overtimePlanForm";
 	}
 
-	@RequiresPermissions("overtime:overtimePlan:edit")
+	@RequiresPermissions("bas:overtimePlan:edit")
 	@RequestMapping(value = "save")
 	public String save(OvertimePlan overtimePlan, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, overtimePlan)){
 			return form(overtimePlan, model);
 		}
 		overtimePlanService.save(overtimePlan);
-		addMessage(redirectAttributes, "保存加班计划申请成功");
-		return "redirect:"+Global.getAdminPath()+"/overtime/overtimePlan/?repage";
+		addMessage(redirectAttributes, "保存加班申请成功");
+		return "redirect:"+Global.getAdminPath()+"/bas/overtimePlan/?repage";
 	}
 	
-	@RequiresPermissions("overtime:overtimePlan:edit")
+	@RequiresPermissions("bas:overtimePlan:edit")
 	@RequestMapping(value = "delete")
 	public String delete(OvertimePlan overtimePlan, RedirectAttributes redirectAttributes) {
 		overtimePlanService.delete(overtimePlan);
-		addMessage(redirectAttributes, "删除加班计划申请成功");
-		return "redirect:"+Global.getAdminPath()+"/overtime/overtimePlan/?repage";
+		addMessage(redirectAttributes, "删除加班申请成功");
+		return "redirect:"+Global.getAdminPath()+"/bas/overtimePlan/?repage";
 	}
 
 }

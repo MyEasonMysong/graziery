@@ -1,7 +1,7 @@
 /**
  * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
  */
-package com.thinkgem.jeesite.modules.overtime.service;
+package com.thinkgem.jeesite.modules.bas.service;
 
 import java.util.List;
 
@@ -10,13 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
-import com.thinkgem.jeesite.modules.overtime.entity.OvertimePlan;
-import com.thinkgem.jeesite.modules.overtime.dao.OvertimePlanDao;
+import com.thinkgem.jeesite.modules.bas.entity.OvertimePlan;
+import com.thinkgem.jeesite.modules.bas.dao.OvertimePlanDao;
 
 /**
- * 加班计划申请Service
- * @author Xuyanyan
- * @version 2019-05-14
+ * 加班申请Service
+ * @author lichao
+ * @version 2019-05-15
  */
 @Service
 @Transactional(readOnly = true)
